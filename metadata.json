@@ -1,0 +1,10 @@
+{
+  "name": "Remix: Acoustic Priming 2",
+  "description": "A fully functional, real-world testing application for the \"Acoustic Priming \u0026 Tool Fetch\" architecture.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
