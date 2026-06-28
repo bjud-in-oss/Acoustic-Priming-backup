@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { NavigationTabs, TabType } from './components/NavigationTabs';
 import { TranscriptTab } from './components/tabs/TranscriptTab';
 import { LogsTab } from './components/tabs/LogsTab';
+import { OutputTab } from './components/tabs/OutputTab';
 import { InputTab } from './components/tabs/InputTab';
 import { WorkspaceTab } from './components/tabs/WorkspaceTab';
 import { TelemetrySidebar } from './components/TelemetrySidebar';
@@ -23,13 +24,8 @@ export default function App() {
     navigateUp
   } = useWorkspace();
 
-  // Unified tool call handler for frontend actions
-  const handleToolCall = useCallback((message: any) => {
-    if (message.name === 'open_webpage' && message.url) {
-        window.open(message.url, '_blank');
-    }
-    // We can also switch tab to log if execution output is gone
-    // setActiveTab('logs');
+  const handleExecutionOutput = useCallback(() => {
+    setActiveTab('output');
   }, []);
 
   const {
@@ -39,7 +35,9 @@ export default function App() {
     logs,
     latencies,
     transcripts,
+    executionOutputs,
     modelStatus,
+    activeCommand,
     payloadText,
     setPayloadText,
     savePayload,
@@ -47,7 +45,7 @@ export default function App() {
     disconnect,
     handlePushStart,
     handlePushEnd
-  } = useAgent(handleToolCall); // Pass tool handler
+  } = useAgent(handleExecutionOutput);
 
   useEffect(() => {
      if (activeTab === 'workspace') {
@@ -72,6 +70,7 @@ export default function App() {
 
             {activeTab === 'transcript' && <TranscriptTab transcripts={transcripts} />}
             {activeTab === 'logs' && <LogsTab logs={logs} />}
+            {activeTab === 'output' && <OutputTab executionOutputs={executionOutputs} />}
             {activeTab === 'input' && <InputTab payloadText={payloadText} setPayloadText={setPayloadText} savePayload={savePayload} />}
             {activeTab === 'workspace' && (
               <WorkspaceTab 
